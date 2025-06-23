@@ -1,23 +1,19 @@
 import streamlit as st
+from openai import OpenAI
 
-st.title("Mein kleiner Chatbot")
+# OpenAI API-Key (aus Streamlit Secrets)
+openai_api_key = st.secrets["OPENAI_API_KEY"]
 
-# Texte laden
-with open("data.txt", "r", encoding="utf-8") as f:
-    texts = f.read().split("\n\n")  # Texte durch Leerzeilen trennen
+client = OpenAI(api_key=openai_api_key)
+
+st.title("Chatbot mit OpenAI")
 
 user_input = st.text_input("Frag mich etwas:")
 
-def simple_search(query, texts):
-    results = [text for text in texts if query.lower() in text.lower()]
-    return results
-
 if user_input:
-    results = simple_search(user_input, texts)
-    if results:
-        st.write("Ich habe Folgendes gefunden:")
-        for res in results:
-            st.write("- " + res)
-    else:
-        st.write("Sorry, dazu habe ich nichts gefunden.")
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": user_input}]
+    )
+    st.write(response.choices[0].message.content)
 
