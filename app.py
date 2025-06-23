@@ -1,18 +1,19 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 
-# OpenAI API-Key laden
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# OpenAI-Client mit API-Key aus secrets
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-st.title("Chatbot mit OpenAI")
+st.title("Chatbot mit GPT-4o")
 
 user_input = st.text_input("Frag mich etwas:")
 
 if user_input:
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4o",
-        messages=[{"role": "user", "content": user_input}]
+        messages=[
+            {"role": "system", "content": "Du bist ein hilfreicher Chatbot."},
+            {"role": "user", "content": user_input}
+        ]
     )
-    st.write(response.choices[0].message["content"])
-
-
+    st.write(response.choices[0].message.content)
