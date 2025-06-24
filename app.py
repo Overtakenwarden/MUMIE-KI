@@ -4,8 +4,8 @@ from openai import OpenAI
 # OpenAI-Client mit API-Key aus Streamlit Secrets
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-st.set_page_config(page_title="Mini-Chatbot", page_icon="💬")
-st.title("💬 Mini-Chatbot mit GPT-4o")
+st.set_page_config(page_title="MUMIE-KI", page_icon="💬")
+st.title("💬 MUMIE-KI")
 
 user_input = st.text_input("Was möchtest du wissen?")
 
